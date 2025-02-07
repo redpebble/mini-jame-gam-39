@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://dcp0ihw4v50o5"]
+
+[ext_resource type="Script" path="res://scenes/characters/player.gd" id="1_bvevi"]
+[ext_resource type="Texture2D" uid="uid://cchpyrnuabq1e" path="res://assets/sprites/ship.png" id="1_spk3r"]
+[ext_resource type="PackedScene" uid="uid://bv71ipe4guxhc" path="res://scenes/weapons/gun.tscn" id="3_t1q00"]
+[ext_resource type="PackedScene" uid="uid://dq8py7uoxdep4" path="res://scenes/weapons/projectiles/pellet.tscn" id="4_5cvu7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_luxlo"]
+radius = 20.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 6
+script = ExtResource("1_bvevi")
+speed = 400.0
+max_hp = 10
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_spk3r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("CircleShape2D_luxlo")
+
+[node name="Gun" parent="." instance=ExtResource("3_t1q00")]
+reload_time = 0.2
+speed = 800
+projectile = ExtResource("4_5cvu7")
