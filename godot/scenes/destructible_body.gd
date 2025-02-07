@@ -7,7 +7,6 @@ signal destroyed
 var hp: int
 
 func set_hp(value):
-	print("set: %s -> %s"%[hp, value])
 	if hp && hp == value: return
 	hp = value
 	hp_changed.emit(hp, max_hp)
@@ -20,7 +19,6 @@ func take_damage(dmg: int):
 	hp -= dmg
 	hp = clamp(hp, 0, max_hp)
 	hp_changed.emit(hp, max_hp)
-	print('%s took %s damage: %s/%s remaining'%[name, dmg, hp, max_hp])
 	if hp <= 0:
 		destroy()
 
@@ -28,7 +26,6 @@ func destroy():
 	# explosion?
 	queue_free()
 	destroyed.emit()
-	print('%s destroyed'%[name])
 
 func _ready() -> void:
 	set_hp(max_hp)

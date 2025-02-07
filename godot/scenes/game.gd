@@ -19,5 +19,4 @@ func _on_spawn_timer_timeout() -> void:
 	enemy_spawned.emit(e)
 
 func _on_remove_area_body_entered(body: Node2D) -> void:
-	print('%s removed'%[body])
 	body.queue_free()

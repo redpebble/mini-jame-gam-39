@@ -9,10 +9,10 @@ signal reloaded
 @export var is_enemy_weapon: bool
 var loaded = true
 
-func fire() -> void:
+func fire(vel: Vector2 = Vector2.ZERO):
 	if loaded:
 		var p = projectile.instantiate()
-		p.init(speed, damage, global_transform, is_enemy_weapon)
+		p.init(vel, speed, damage, global_transform, is_enemy_weapon)
 		get_tree().get_root().call_deferred("add_child", p)
 		loaded = false
 		$ReloadTimer.start()
