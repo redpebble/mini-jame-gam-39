@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://wjd0nsgbac3a"]
+
+[ext_resource type="Texture2D" uid="uid://b5bwt0no124se" path="res://assets/sprites/planet.png" id="1_5ooyd"]
+[ext_resource type="PackedScene" uid="uid://dcp0ihw4v50o5" path="res://scenes/characters/player.tscn" id="2_4fgon"]
+[ext_resource type="Script" path="res://scenes/pivot_node.gd" id="2_crob7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ruwvl"]
+radius = 70.0
+
+[node name="World" type="Node2D"]
+
+[node name="Planet" type="StaticBody2D" parent="."]
+position = Vector2(500, 500)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Planet"]
+shape = SubResource("CircleShape2D_ruwvl")
+
+[node name="Sprite" type="Sprite2D" parent="Planet"]
+scale = Vector2(3.125, 3.125)
+texture = ExtResource("1_5ooyd")
+
+[node name="PivotNode" type="Node2D" parent="Planet"]
+rotation = -1.5708
+script = ExtResource("2_crob7")
+acceleration = 10.0
+
+[node name="Player" parent="Planet/PivotNode" instance=ExtResource("2_4fgon")]
+position = Vector2(110, 0)
+rotation = 1.5708
