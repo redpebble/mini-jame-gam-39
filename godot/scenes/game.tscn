@@ -1,123 +1,56 @@
-[gd_scene load_steps=15 format=3 uid="uid://ojq6qm1aqfsa"]
+[gd_scene load_steps=9 format=3 uid="uid://ojq6qm1aqfsa"]
 
+[ext_resource type="Texture2D" uid="uid://b5bwt0no124se" path="res://assets/sprites/planet.png" id="1_5ooyd"]
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_npyn2"]
-[ext_resource type="Texture2D" uid="uid://8kqxdp4d04uk" path="res://assets/sprites/star.png" id="1_p0yxe"]
-[ext_resource type="Texture2D" uid="uid://bs8ygohuytey8" path="res://assets/black-bg.png" id="2_qguvw"]
-[ext_resource type="PackedScene" uid="uid://dw83puyctgkvr" path="res://scenes/characters/enemy.tscn" id="3_sh1te"]
+[ext_resource type="PackedScene" uid="uid://dcp0ihw4v50o5" path="res://scenes/characters/player.tscn" id="2_4fgon"]
+[ext_resource type="Script" path="res://scenes/player_pivot.gd" id="2_crob7"]
+[ext_resource type="Script" path="res://scenes/enemy_pivot_group.gd" id="2_whcb7"]
+[ext_resource type="Script" path="res://scenes/Hurtbox.gd" id="3_k05c8"]
+[ext_resource type="PackedScene" uid="uid://bunwupkge7p2b" path="res://scenes/characters/pivot_enemy.tscn" id="3_kljav"]
 
-[sub_resource type="Curve" id="Curve_0bejw"]
-min_value = 0.4
-max_value = 0.5
-_data = [Vector2(0, 0.4), 0.0, 0.0469276, 0, 1, Vector2(0.753378, 0.435354), 0.134423, 0.134423, 0, 0, Vector2(1, 0.5), 0.262125, 0.0, 1, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_343gv"]
-curve = SubResource("Curve_0bejw")
-
-[sub_resource type="Curve" id="Curve_uackj"]
-max_value = 2.0
-_data = [Vector2(0, 0.317439), 0.0, 0.0, 0, 0, Vector2(0.912162, 0.990463), 1.98365, 1.98365, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_jt0n6"]
-curve = SubResource("Curve_uackj")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qjw0m"]
-particle_flag_disable_z = true
-emission_shape_offset = Vector3(300, 0, 0)
-emission_shape = 3
-emission_box_extents = Vector3(300, 1, 1)
-direction = Vector3(0, 1, 0)
-spread = 0.0
-initial_velocity_min = 20.0
-initial_velocity_max = 30.0
-gravity = Vector3(0, 0, 0)
-scale_min = 0.3
-scale_max = 0.5
-scale_curve = SubResource("CurveTexture_343gv")
-scale_over_velocity_min = 30.0
-scale_over_velocity_max = 60.0
-scale_over_velocity_curve = SubResource("CurveTexture_jt0n6")
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xs5bd"]
-size = Vector2(560, 50)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_aw7j7"]
-size = Vector2(100, 1300)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8hw3n"]
-size = Vector2(1300, 100)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ki6pk"]
-size = Vector2(640, 20)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_atc4p"]
-size = Vector2(20, 800)
+[sub_resource type="CircleShape2D" id="CircleShape2D_ruwvl"]
+radius = 68.0074
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_npyn2")
-enemy_to_spawn = ExtResource("3_sh1te")
 
-[node name="BlackBG" type="Sprite2D" parent="."]
-position = Vector2(300, 400)
-texture = ExtResource("2_qguvw")
+[node name="Planet" type="Node2D" parent="."]
+position = Vector2(500, 500)
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-modulate = Color(0.427493, 0.427493, 0.427493, 1)
-amount = 1000
-process_material = SubResource("ParticleProcessMaterial_qjw0m")
-texture = ExtResource("1_p0yxe")
-lifetime = 40.0
-preprocess = 40.0
-visibility_rect = Rect2(0, 0, 600, 800)
+[node name="Sprite" type="Sprite2D" parent="Planet"]
+scale = Vector2(3.125, 3.125)
+texture = ExtResource("1_5ooyd")
 
-[node name="SpawnArea" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SpawnArea"]
-position = Vector2(300, -50)
-shape = SubResource("RectangleShape2D_xs5bd")
-
-[node name="SpawnTimer" type="Timer" parent="."]
-autostart = true
-
-[node name="RemoveArea" type="Area2D" parent="."]
-collision_layer = 0
+[node name="HurtBox" type="Area2D" parent="Planet"]
 collision_mask = 2
+script = ExtResource("3_k05c8")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RemoveArea"]
-position = Vector2(900, 400)
-shape = SubResource("RectangleShape2D_aw7j7")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Planet/HurtBox"]
+shape = SubResource("CircleShape2D_ruwvl")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="RemoveArea"]
-position = Vector2(-300, 400)
-shape = SubResource("RectangleShape2D_aw7j7")
+[node name="EnemyPivotGroup" type="Node2D" parent="."]
+position = Vector2(500, 500)
+script = ExtResource("2_whcb7")
+enemy_to_spawn = ExtResource("3_kljav")
+speed = 0.5
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="RemoveArea"]
-position = Vector2(300, -300)
-shape = SubResource("RectangleShape2D_8hw3n")
+[node name="EnemyPivotGroup2" type="Node2D" parent="."]
+position = Vector2(500, 500)
+script = ExtResource("2_whcb7")
+enemy_to_spawn = ExtResource("3_kljav")
+speed = -0.5
+initial_distance = 1000.0
 
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="RemoveArea"]
-position = Vector2(300, 1100)
-shape = SubResource("RectangleShape2D_8hw3n")
+[node name="PlayerPivot" type="Node2D" parent="."]
+position = Vector2(500, 500)
+rotation = -1.5708
+script = ExtResource("2_crob7")
+acceleration = 10.0
 
-[node name="BorderFence" type="StaticBody2D" parent="."]
-collision_layer = 4
+[node name="Player" parent="PlayerPivot" instance=ExtResource("2_4fgon")]
+position = Vector2(110, 0)
+rotation = 1.5708
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderFence"]
-position = Vector2(300, -10)
-shape = SubResource("RectangleShape2D_ki6pk")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="BorderFence"]
-position = Vector2(300, 810)
-shape = SubResource("RectangleShape2D_ki6pk")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="BorderFence"]
-position = Vector2(-10, 400)
-shape = SubResource("RectangleShape2D_atc4p")
-
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="BorderFence"]
-position = Vector2(610, 400)
-shape = SubResource("RectangleShape2D_atc4p")
-
-[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
-[connection signal="body_entered" from="RemoveArea" to="." method="_on_remove_area_body_entered"]
+[connection signal="enemy_spawned" from="EnemyPivotGroup" to="." method="_on_enemy_pivot_group_enemy_spawned"]
+[connection signal="enemy_spawned" from="EnemyPivotGroup2" to="." method="_on_enemy_pivot_group_enemy_spawned"]
+[connection signal="ready" from="PlayerPivot" to="." method="_on_player_pivot_ready"]

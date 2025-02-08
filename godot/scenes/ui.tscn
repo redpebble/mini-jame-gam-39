@@ -51,4 +51,6 @@ offset_right = 43.5
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "Game Over"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 59
+text = "YOU DIED"

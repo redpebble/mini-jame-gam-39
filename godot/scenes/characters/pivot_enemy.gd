@@ -15,3 +15,6 @@ func _physics_process(delta: float) -> void:
 
 func _on_enemy_destroyed() -> void:
 	queue_free()
+
+func get_enemy():
+	return $Enemy

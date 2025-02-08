@@ -1,22 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://cfcxfldeq64eb"]
+[gd_scene load_steps=4 format=3 uid="uid://cfcxfldeq64eb"]
 
-[ext_resource type="PackedScene" uid="uid://ojq6qm1aqfsa" path="res://scenes/game.tscn" id="1_o6fmn"]
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_uohuc"]
-[ext_resource type="PackedScene" uid="uid://dcp0ihw4v50o5" path="res://scenes/characters/player.tscn" id="1_ut8q8"]
+[ext_resource type="PackedScene" uid="uid://ojq6qm1aqfsa" path="res://scenes/game.tscn" id="2_t3how"]
 [ext_resource type="PackedScene" uid="uid://coe2mg542ybib" path="res://scenes/ui.tscn" id="3_c4fui"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_uohuc")
 
-[node name="Game" parent="." instance=ExtResource("1_o6fmn")]
-
-[node name="Player" parent="." instance=ExtResource("1_ut8q8")]
-position = Vector2(302, 695)
+[node name="Game" parent="." instance=ExtResource("2_t3how")]
 
 [node name="UI" parent="." instance=ExtResource("3_c4fui")]
-offset_right = 600.0
-offset_bottom = 800.0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1000.0
+offset_bottom = 1000.0
+grow_horizontal = 1
+grow_vertical = 1
 
-[connection signal="enemy_spawned" from="Game" to="." method="_on_map_enemy_spawned"]
-[connection signal="destroyed" from="Player" to="." method="_on_player_destroyed"]
-[connection signal="hp_changed" from="Player" to="." method="_on_player_hp_changed"]
+[connection signal="enemy_spawned" from="Game" to="." method="_on_game_enemy_spawned"]
+[connection signal="player_ready" from="Game" to="." method="_on_game_player_ready"]

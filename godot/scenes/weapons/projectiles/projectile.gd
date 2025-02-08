@@ -12,6 +12,8 @@ func init(dir, spd, global_trns, is_enemy):
 
 func _physics_process(delta: float) -> void:
 	position += direction * speed * delta
+	if position.distance_to(Vector2(500,500)) > 1000:
+		queue_free()
 
 func _ready() -> void:
 	if is_enemy_weapon:

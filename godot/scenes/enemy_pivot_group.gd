@@ -13,8 +13,8 @@ func _ready() -> void:
 		var e = enemy_to_spawn.instantiate()
 		e.initial_distance = initial_distance
 		e.angle = i * interval
+		e.ready.connect(func(): enemy_spawned.emit(e.get_enemy()))
 		call_deferred("add_child", e)
-		enemy_spawned.emit(e)
 
 func _physics_process(delta: float) -> void:
 	rotate(speed * delta)
