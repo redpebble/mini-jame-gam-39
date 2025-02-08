@@ -1,23 +1,17 @@
-extends Character
+extends Node2D
+
+signal destroyed
 
 @export var collision_damage = 5
 @onready var gun = $Gun
-var direction: Vector2 = Vector2.DOWN
-
-func _physics_process(delta: float) -> void:
-	velocity = direction.normalized() * speed
-	look_at(position + velocity)
-	rotation += PI/2
-	
-	var collision = move_and_collide(velocity * delta)
-	if collision:
-		deal_damage(collision.get_collider(), collision_damage)
-		
-		# spawn explosion?
 
 func _on_gun_reloaded() -> void:
-	gun.fire()
+	gun.fire(Vector2.from_angle(global_rotation - PI/2))
 
 func _ready() -> void:
-	super()
-	gun.fire()
+	print(global_position)
+	gun.fire(Vector2.from_angle(global_rotation - PI/2))
+
+func take_damage(damage):
+	queue_free()
+	destroyed.emit()

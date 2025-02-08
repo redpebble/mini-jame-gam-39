@@ -1,19 +1,22 @@
-class_name Projectile extends DestructibleBody
+class_name Projectile extends Node2D
 
+var direction: Vector2 = Vector2.RIGHT
 var speed: float = 1000
-var damage: int = 1
+var is_enemy_weapon: bool = false
 
-func init(vel, spd, dmg, global_trns, is_enemy_weapon):
+func init(dir, spd, global_trns, is_enemy):
+	direction = dir
 	speed = spd
-	damage = dmg
 	global_transform = global_trns
-	if is_enemy_weapon:
-		collision_layer = 2
-		collision_mask = 1
-	velocity = (vel / 7) + (-transform.y * speed)
+	is_enemy_weapon = is_enemy
 
 func _physics_process(delta: float) -> void:
-	var collision = move_and_collide(velocity * delta)
-	if collision:
-		deal_damage(collision.get_collider(), damage)
-		destroy()
+	position += direction * speed * delta
+
+func _ready() -> void:
+	if is_enemy_weapon:
+		$HitBox.collision_layer = 2
+		$HitBox.collision_mask = 1
+
+func _on_hit_box_detected(hurtbox: Variant) -> void:
+	queue_free()
