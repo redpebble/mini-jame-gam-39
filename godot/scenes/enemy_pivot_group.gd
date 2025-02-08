@@ -2,11 +2,19 @@ extends Node2D
 
 signal enemy_spawned(enemy)
 
+@export var enemies_per_ring: int = 12
 @export var enemy_to_spawn: PackedScene
+@export var speed: float = 3
+@export var initial_distance: float = 700
 
-func _on_spawn_timer_timeout() -> void:
-	var e = enemy_to_spawn.instantiate()
-	e.initial_distance = 400
-	e.angle = randf_range(0, 2*PI)
-	call_deferred("add_child", e)
-	enemy_spawned.emit(e)
+func _ready() -> void:
+	var interval = 2*PI/enemies_per_ring
+	for i in enemies_per_ring:
+		var e = enemy_to_spawn.instantiate()
+		e.initial_distance = initial_distance
+		e.angle = i * interval
+		call_deferred("add_child", e)
+		enemy_spawned.emit(e)
+
+func _physics_process(delta: float) -> void:
+	rotate(speed * delta)

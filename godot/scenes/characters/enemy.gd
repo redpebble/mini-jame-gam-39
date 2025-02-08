@@ -8,10 +8,13 @@ signal destroyed
 func _on_gun_reloaded() -> void:
 	gun.fire(Vector2.from_angle(global_rotation - PI/2))
 
-func _ready() -> void:
-	print(global_position)
+func take_damage(damage):
+	queue_free()
+	destroyed.emit()
+
+func start_firing():
 	gun.fire(Vector2.from_angle(global_rotation - PI/2))
 
-func take_damage(damage):
+func _on_hit_box_detected(hurtbox: Variant) -> void:
 	queue_free()
 	destroyed.emit()

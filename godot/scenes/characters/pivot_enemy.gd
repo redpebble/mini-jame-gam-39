@@ -8,6 +8,7 @@ func _ready() -> void:
 	$Enemy.position.x = initial_distance
 	$Enemy.rotation -= PI/2
 	rotation = angle + PI/2
+	$Enemy.start_firing()
 
 func _physics_process(delta: float) -> void:
 	$Enemy.position.x -= delta * speed

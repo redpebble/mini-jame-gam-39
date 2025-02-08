@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://dw83puyctgkvr"]
+[gd_scene load_steps=8 format=3 uid="uid://dw83puyctgkvr"]
 
 [ext_resource type="Script" path="res://scenes/characters/enemy.gd" id="1_40tls"]
 [ext_resource type="Texture2D" uid="uid://1tcsmqagl20p" path="res://assets/sprites/enemy.png" id="1_k44jb"]
 [ext_resource type="Script" path="res://scenes/Hurtbox.gd" id="2_6qwq7"]
 [ext_resource type="PackedScene" uid="uid://bv71ipe4guxhc" path="res://scenes/weapons/gun.tscn" id="3_3scxx"]
 [ext_resource type="PackedScene" uid="uid://dq8py7uoxdep4" path="res://scenes/weapons/projectiles/pellet.tscn" id="4_lit67"]
+[ext_resource type="Script" path="res://scenes/Hitbox.gd" id="4_lvtjh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6gdus"]
 radius = 29.0
@@ -16,10 +17,20 @@ script = ExtResource("1_40tls")
 texture = ExtResource("1_k44jb")
 
 [node name="HurtBox" type="Area2D" parent="."]
+editor_description = "Collides with player projectile hitboxes"
 collision_layer = 2
 script = ExtResource("2_6qwq7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+shape = SubResource("CircleShape2D_6gdus")
+
+[node name="HitBox" type="Area2D" parent="."]
+editor_description = "Collides with player/planet hurtboxes"
+collision_layer = 2
+script = ExtResource("4_lvtjh")
+damage = 10
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="HitBox"]
 shape = SubResource("CircleShape2D_6gdus")
 
 [node name="Gun" parent="." instance=ExtResource("3_3scxx")]
@@ -28,4 +39,5 @@ speed = 300
 projectile = ExtResource("4_lit67")
 is_enemy_weapon = true
 
+[connection signal="detected" from="HitBox" to="." method="_on_hit_box_detected"]
 [connection signal="reloaded" from="Gun" to="." method="_on_gun_reloaded"]

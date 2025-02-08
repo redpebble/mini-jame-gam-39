@@ -25,5 +25,5 @@ shape = SubResource("CircleShape2D_luxlo")
 
 [node name="Gun" parent="." instance=ExtResource("3_t1q00")]
 reload_time = 0.2
-speed = 800
+speed = 2000
 projectile = ExtResource("4_5cvu7")
