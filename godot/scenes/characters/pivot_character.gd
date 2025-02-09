@@ -29,4 +29,4 @@ func get_angular_speed(linear_speed: float, radius: float) -> float:
 	return linear_speed / radius
 
 func get_forward_vector():
-	return Vector2.from_angle(global_rotation + (0 if facing_out else PI))
+	return Vector2.from_angle(global_rotation + (0.0 if facing_out else PI))

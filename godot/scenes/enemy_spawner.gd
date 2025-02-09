@@ -16,5 +16,5 @@ func _ready() -> void:
 		e.ready.connect(func(): enemy_spawned.emit(e))
 		call_deferred("add_child", e)
 
-func _physics_process(delta: float) -> void:
-	rotate(speed * delta)
+#func _physics_process(delta: float) -> void:
+	#rotate(speed * delta)

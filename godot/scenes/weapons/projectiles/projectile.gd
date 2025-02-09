@@ -20,5 +20,5 @@ func _ready() -> void:
 		$Hitbox.collision_layer = 2
 		$Hitbox.collision_mask = 1
 
-func _on_hitbox_deal_hit(hurtbox: Hurtbox, modifier: float) -> void:
+func _on_hitbox_deal_hit(_hurtbox: Hurtbox, _modifier: float) -> void:
 	queue_free()
