@@ -17,8 +17,8 @@ func _physics_process(delta: float) -> void:
 
 func _ready() -> void:
 	if is_enemy_weapon:
-		$HitBox.collision_layer = 2
-		$HitBox.collision_mask = 1
+		$Hitbox.collision_layer = 2
+		$Hitbox.collision_mask = 1
 
-func _on_hit_box_detected(hurtbox: Variant) -> void:
+func _on_hitbox_deal_hit(hurtbox: Hurtbox, modifier: float) -> void:
 	queue_free()

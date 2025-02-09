@@ -12,8 +12,8 @@ func _ready() -> void:
 	for i in enemies_per_ring:
 		var e = enemy_to_spawn.instantiate()
 		e.initial_distance = initial_distance
-		e.angle = i * interval
-		e.ready.connect(func(): enemy_spawned.emit(e.get_enemy()))
+		e.initial_angle = i * interval
+		e.ready.connect(func(): enemy_spawned.emit(e))
 		call_deferred("add_child", e)
 
 func _physics_process(delta: float) -> void:

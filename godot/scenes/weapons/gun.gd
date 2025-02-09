@@ -5,7 +5,7 @@ signal reloaded
 @export var reload_time: float = 1
 @export var speed: int = 1000
 @export var projectile: PackedScene
-@export var is_enemy_weapon: bool
+@export var is_enemy_weapon: bool = false
 var loaded = true
 
 func fire(direction: Vector2):

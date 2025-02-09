@@ -1,9 +1,11 @@
 # Allows its owner to detect hits and take damage
-class_name HurtBox
+class_name Hurtbox
 extends Area2D
 
 signal invincibility_started
 signal invincibility_ended
+
+signal take_hit(hitbox: Hitbox, modifier: float)
 
 @export var allow_retrigger := false ## Hitboxes don't need to reenter this area to inflict damage.
 @export var automatic_invincibility := false
@@ -40,28 +42,26 @@ func _process(delta):
 			register_hit(hitbox, delta * 0.5)
 
 
-func register_hit(hitbox : HitBox, modifier := 1.0):
+func register_hit(hitbox : Hitbox, modifier := 1.0):
 	if hitbox.owner == self:
 		return
 	if is_friendly(hitbox):
 		return
 	
-	if owner.has_method("take_damage"):
-		owner.take_damage(hitbox.damage * modifier)
-		last_registered_hit.damage = hitbox.damage * modifier
-	if owner.has_method("take_knockback"):
-		var knockback_vec = -global_position.direction_to(hitbox.global_position)
-		if hitbox.get("knockback_direction") != null:
-			knockback_vec = hitbox.knockback_direction
-		owner.take_knockback(hitbox.knockback, knockback_vec)
-		last_registered_hit.direction = knockback_vec
+	take_hit.emit(hitbox, modifier)
+	last_registered_hit.damage = hitbox.damage * modifier
+	
+	var knockback_vec = -global_position.direction_to(hitbox.global_position)
+	if hitbox.get("knockback_direction") != null:
+		knockback_vec = hitbox.knockback_direction
+	#take_knockback.emit(hitbox.knockback, knockback_vec) # todo: redo this if need knockback
+	last_registered_hit.direction = knockback_vec
 	
 	# double check this export variable if experiencing issues
 	if automatic_invincibility:
 		start_invincibility(invincibilty_duration)
-
 	
-	hitbox.detected.emit(self)
+	hitbox.deal_hit.emit(self, modifier)
 
 
 ## Invincibility ##
@@ -83,7 +83,7 @@ func _on_invincibility_started():
 func _on_invincibility_ended():
 	set_deferred("monitoring", true)
 
-func is_friendly(hitbox : HitBox):
+func is_friendly(hitbox : Hitbox):
 	for g in friendly_groups:
 		if hitbox.owner.is_in_group(g):
 			return true

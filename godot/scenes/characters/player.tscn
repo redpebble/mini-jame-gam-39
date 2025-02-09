@@ -1,29 +1,45 @@
-[gd_scene load_steps=7 format=3 uid="uid://dcp0ihw4v50o5"]
+[gd_scene load_steps=8 format=3 uid="uid://bqujft88168jh"]
 
-[ext_resource type="Script" path="res://scenes/characters/player.gd" id="1_bvevi"]
-[ext_resource type="Texture2D" uid="uid://cchpyrnuabq1e" path="res://assets/sprites/ship.png" id="1_spk3r"]
-[ext_resource type="Script" path="res://scenes/Hurtbox.gd" id="3_0lu25"]
-[ext_resource type="PackedScene" uid="uid://bv71ipe4guxhc" path="res://scenes/weapons/gun.tscn" id="3_t1q00"]
-[ext_resource type="PackedScene" uid="uid://dq8py7uoxdep4" path="res://scenes/weapons/projectiles/pellet.tscn" id="4_5cvu7"]
+[ext_resource type="Script" path="res://scenes/characters/player.gd" id="1_knft8"]
+[ext_resource type="Texture2D" uid="uid://cchpyrnuabq1e" path="res://assets/sprites/ship.png" id="2_2dxqp"]
+[ext_resource type="Script" path="res://scenes/hurtbox.gd" id="3_1gv8u"]
+[ext_resource type="Script" path="res://scenes/hitbox.gd" id="4_r0q73"]
+[ext_resource type="PackedScene" uid="uid://bv71ipe4guxhc" path="res://scenes/weapons/gun.tscn" id="5_rehq3"]
+[ext_resource type="PackedScene" uid="uid://dq8py7uoxdep4" path="res://scenes/weapons/projectiles/pellet.tscn" id="6_1hnrw"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_luxlo"]
-radius = 20.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_lc5ut"]
+radius = 29.0
 
 [node name="Player" type="Node2D"]
-script = ExtResource("1_bvevi")
+script = ExtResource("1_knft8")
+max_speed = 300.0
+acceleration = 10.0
+initial_distance = 120.0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_spk3r")
+[node name="Body" type="Node2D" parent="."]
 
-[node name="HurtBox" type="Area2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="Body"]
+texture = ExtResource("2_2dxqp")
+
+[node name="Hurtbox" type="Area2D" parent="Body"]
+editor_description = "Collides with player projectile hitboxes"
 collision_mask = 2
-script = ExtResource("3_0lu25")
+script = ExtResource("3_1gv8u")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
-position = Vector2(0, 4)
-shape = SubResource("CircleShape2D_luxlo")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body/Hurtbox"]
+shape = SubResource("CircleShape2D_lc5ut")
 
-[node name="Gun" parent="." instance=ExtResource("3_t1q00")]
+[node name="Hitbox" type="Area2D" parent="Body"]
+editor_description = "Collides with player/planet hurtboxes"
+collision_mask = 2
+script = ExtResource("4_r0q73")
+damage = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body/Hitbox"]
+shape = SubResource("CircleShape2D_lc5ut")
+
+[node name="Gun" parent="Body" instance=ExtResource("5_rehq3")]
 reload_time = 0.2
-speed = 2000
-projectile = ExtResource("4_5cvu7")
+projectile = ExtResource("6_1hnrw")
+
+[connection signal="take_hit" from="Body/Hurtbox" to="." method="_on_hurtbox_take_hit"]

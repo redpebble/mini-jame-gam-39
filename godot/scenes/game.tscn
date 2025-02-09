@@ -1,12 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://ojq6qm1aqfsa"]
+[gd_scene load_steps=8 format=3 uid="uid://ojq6qm1aqfsa"]
 
 [ext_resource type="Texture2D" uid="uid://b5bwt0no124se" path="res://assets/sprites/planet.png" id="1_5ooyd"]
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_npyn2"]
-[ext_resource type="PackedScene" uid="uid://dcp0ihw4v50o5" path="res://scenes/characters/player.tscn" id="2_4fgon"]
-[ext_resource type="Script" path="res://scenes/player_pivot.gd" id="2_crob7"]
-[ext_resource type="Script" path="res://scenes/enemy_pivot_group.gd" id="2_whcb7"]
-[ext_resource type="Script" path="res://scenes/Hurtbox.gd" id="3_k05c8"]
-[ext_resource type="PackedScene" uid="uid://bunwupkge7p2b" path="res://scenes/characters/pivot_enemy.tscn" id="3_kljav"]
+[ext_resource type="Script" path="res://scenes/enemy_spawner.gd" id="2_whcb7"]
+[ext_resource type="Script" path="res://scenes/hurtbox.gd" id="3_k05c8"]
+[ext_resource type="PackedScene" uid="uid://cxx6i7mtqrlpb" path="res://scenes/characters/enemy.tscn" id="3_kljav"]
+[ext_resource type="PackedScene" uid="uid://bqujft88168jh" path="res://scenes/characters/player.tscn" id="6_b4hwe"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ruwvl"]
 radius = 68.0074
@@ -28,29 +27,15 @@ script = ExtResource("3_k05c8")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Planet/HurtBox"]
 shape = SubResource("CircleShape2D_ruwvl")
 
-[node name="EnemyPivotGroup" type="Node2D" parent="."]
+[node name="Player" parent="." instance=ExtResource("6_b4hwe")]
+position = Vector2(500, 500)
+
+[node name="EnemySpawner" type="Node2D" parent="."]
 position = Vector2(500, 500)
 script = ExtResource("2_whcb7")
+enemies_per_ring = 4
 enemy_to_spawn = ExtResource("3_kljav")
-speed = 0.5
+speed = 0.1
+initial_distance = 400.0
 
-[node name="EnemyPivotGroup2" type="Node2D" parent="."]
-position = Vector2(500, 500)
-script = ExtResource("2_whcb7")
-enemy_to_spawn = ExtResource("3_kljav")
-speed = -0.5
-initial_distance = 1000.0
-
-[node name="PlayerPivot" type="Node2D" parent="."]
-position = Vector2(500, 500)
-rotation = -1.5708
-script = ExtResource("2_crob7")
-acceleration = 10.0
-
-[node name="Player" parent="PlayerPivot" instance=ExtResource("2_4fgon")]
-position = Vector2(110, 0)
-rotation = 1.5708
-
-[connection signal="enemy_spawned" from="EnemyPivotGroup" to="." method="_on_enemy_pivot_group_enemy_spawned"]
-[connection signal="enemy_spawned" from="EnemyPivotGroup2" to="." method="_on_enemy_pivot_group_enemy_spawned"]
-[connection signal="ready" from="PlayerPivot" to="." method="_on_player_pivot_ready"]
+[connection signal="enemy_spawned" from="EnemySpawner" to="." method="_on_enemy_spawner_enemy_spawned"]
