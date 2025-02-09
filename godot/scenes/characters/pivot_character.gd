@@ -18,8 +18,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	direction = direction.normalized()
-	body.position.x -= delta * speed * direction.y
 	speed = lerp(speed, max_speed * direction.x, acceleration * delta)
+	body.position.x -= delta * abs(speed) * direction.y
 	rotate(get_angular_speed(speed, body.position.x) * delta)
 
 func get_body():

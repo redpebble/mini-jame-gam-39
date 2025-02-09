@@ -4,8 +4,8 @@
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_npyn2"]
 [ext_resource type="Script" path="res://scenes/enemy_spawner.gd" id="2_whcb7"]
 [ext_resource type="Script" path="res://scenes/hurtbox.gd" id="3_k05c8"]
-[ext_resource type="PackedScene" uid="uid://cxx6i7mtqrlpb" path="res://scenes/characters/enemy.tscn" id="3_kljav"]
 [ext_resource type="PackedScene" uid="uid://bqujft88168jh" path="res://scenes/characters/player.tscn" id="6_b4hwe"]
+[ext_resource type="Script" path="res://scenes/spawn_timer.gd" id="7_anrbe"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ruwvl"]
 radius = 68.0074
@@ -34,8 +34,12 @@ position = Vector2(500, 500)
 position = Vector2(500, 500)
 script = ExtResource("2_whcb7")
 enemies_per_ring = 4
-enemy_to_spawn = ExtResource("3_kljav")
-speed = 0.1
 initial_distance = 400.0
 
+[node name="SpawnTimer" type="Timer" parent="EnemySpawner"]
+autostart = true
+script = ExtResource("7_anrbe")
+
 [connection signal="enemy_spawned" from="EnemySpawner" to="." method="_on_enemy_spawner_enemy_spawned"]
+[connection signal="tick" from="EnemySpawner/SpawnTimer" to="EnemySpawner" method="_on_spawn_timer_tick"]
+[connection signal="timeout" from="EnemySpawner/SpawnTimer" to="EnemySpawner/SpawnTimer" method="_on_timeout"]
